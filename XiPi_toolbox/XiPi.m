@@ -11,7 +11,6 @@ classdef XiPi < handle
     properties(Access = protected)
         preprocess
         separate
-        plot
     end
 
     methods  % public paras
