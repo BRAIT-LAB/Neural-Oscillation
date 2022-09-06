@@ -16,7 +16,7 @@ function [extrem, fm] = pkextrem1(psd,freq,fmas,fmi,i)
 
 rd = 0.008; % ratio to pick minima
 
-[ppSpline,p] = csaps(freq,psd); % p=1 for simulation
+[ppSpline,p] = my_csaps(freq,psd); % p=1 for simulation
 [~, fmis] = splineMaximaMinima(ppSpline);
 fmi = [fmi;fmis];
 
