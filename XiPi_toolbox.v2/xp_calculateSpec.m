@@ -38,8 +38,8 @@ function XiPi = xp_calculateSpec(XiPi,time_range,limited_freq,varargin)
     [pxx,f] = pwelch(data',hanning(window_size),overlapping,XiPi.srate / freqResolution,XiPi.srate);
     spectra = pxx';
     freq = f';
-    XiPi.freq = freq(1:limited_freq / freqResolution + 1);
-    XiPi.spectra = spectra(:,1:limited_freq / freqResolution + 1);
+    XiPi.freq = freq(2:limited_freq / freqResolution + 1);
+    XiPi.spectra = spectra(:,2:limited_freq / freqResolution + 1);
 
     % notify
     disp('success! see XiPi.spectra for results')
