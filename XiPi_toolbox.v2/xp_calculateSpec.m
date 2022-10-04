@@ -21,7 +21,7 @@ function XiPi = xp_calculateSpec(XiPi,time_range,limited_freq,varargin)
     end
 
     if isempty(time_range)
-        time_range = [0 size(XiPi.data,2)];
+        time_range = [0 size(XiPi.data,2) / XiPi.srate];
     end
     if isempty(limited_freq)
         if XiPi.srate > 100
