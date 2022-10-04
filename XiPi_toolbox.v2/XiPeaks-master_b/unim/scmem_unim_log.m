@@ -52,8 +52,9 @@ for i=1:maxIt
     end
 end
 
-components = sigIt.K(:,:,final) - upDistance;
-componentsNum = size(components,2) - 1;
-psd_ftd = sum(components,2)+ componentsNum * upDistance;
+components = sigIt.K(:,:,final);
+% componentsNum = size(components,2) - 1;
+components(:,1) = components(:,1) - upDistance;
+psd_ftd = sum(components,2);
 
 end

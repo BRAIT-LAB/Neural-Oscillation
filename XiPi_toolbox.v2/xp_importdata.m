@@ -1,6 +1,8 @@
-function XiPi = xp_importdata()
+function XiPi = xp_importdata(EEG)
     % use EEGLAB import set function.
-    EEG = pop_loadset();
+    if isempty(EEG)
+        EEG = pop_loadset();
+    end
 
     % new struct
     XiPi = struct();
