@@ -1,16 +1,17 @@
 % EEGLAB preprocessing ...
 
+
 % load data, need eeglab support
 XiPi = xp_importdata([]);
 
 % calculateSpec
-XiPi = xp_calculateSpec(XiPi,[],45,'select_chan',1:XiPi.nbchan);
+XiPi = xp_calculateSpec(XiPi,[],50);
 
 % separateSepc
-XiPi = xp_separateSepc(XiPi,'chooseChannels',16,'scale','logarithm');
+XiPi = xp_separateSepc(XiPi,'chooseChannels',[1 2]);
 
 % plot
-XiPi = xp_plot(XiPi,[1 2]);
+XiPi = xp_plot(XiPi,1:100);
 
 % parameterization
 XiPi = xp_parameterize(XiPi);
