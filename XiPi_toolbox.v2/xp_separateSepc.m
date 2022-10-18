@@ -10,7 +10,11 @@ function XiPi = xp_separateSepc(XiPi,varargin)
             input.parse(varargin{:});
             channels = input.Results.chooseChannels;
             scale = input.Results.scale;
+            XiPi.separateSalce = scale;
             
+            % waitbar
+            h = waitbar(0,'processing...');
+
             % separate spectra. natural
             if  strcmp(scale,'natural')
                 for i = channels
@@ -24,7 +28,11 @@ function XiPi = xp_separateSepc(XiPi,varargin)
                     XiPi.separate.xi = [XiPi.separate.xi;components(:,1)'];
                     XiPi.separate.pi.("spectra_" + num2str(i)) = components(:,2:end)';
                     XiPi.separate.combining = [XiPi.separate.combining;overallfitting'];
+                    
+                    str = ['running separateSpectra...',num2str(i/length(channels)*100),'%'];
+                    waitbar(i/length(channels),h,str);
                 end
+                delete(h)
             end
             % separate spectra. log, scalp eeg
             if  strcmp(scale,'logarithm')
@@ -39,7 +47,11 @@ function XiPi = xp_separateSepc(XiPi,varargin)
                     XiPi.separate.xi = [XiPi.separate.xi;components(:,1)'];
                     XiPi.separate.pi.("spectra_" + num2str(i)) = components(:,2:end)';
                     XiPi.separate.combining = [XiPi.separate.combining;overallfitting'];
+
+                    str = ['running separateSpectra...',num2str(i/length(channels)*100),'%'];
+                    waitbar(i/length(channels),h,str);
                 end
+                delete(h)
             end
             
             % notify

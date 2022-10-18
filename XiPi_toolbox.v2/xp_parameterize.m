@@ -1,8 +1,7 @@
 function XiPi = xp_parameterize(XiPi,varargin)
-    % new saparate spectra struct
-    XiPi.paras.xi_paras = struct;
-    XiPi.paras.pi_paras = struct;
-    
+    % init XiPi.spectra
+    XiPi.spectra = [];
+
     input = inputParser();
     input.addParameter('apEquation','b - log10(x^a)',@ischar);
     input.addParameter('peakEquation','a1*exp(-((x-b1)/c1)^2)',@ischar);
@@ -11,19 +10,31 @@ function XiPi = xp_parameterize(XiPi,varargin)
     apEquation = input.Results.apEquation;
     peakEquation = input.Results.peakEquation;
     scale = input.Results.scale;
+    XiPi.parameterizeSalce = scale;
 
-    disp(['The apEquation is ',apEquation]);
-    disp(['The peakEquation is ',peakEquation]);warning("off")
-    
+    disp(['The apEquation : ',apEquation]);
+    disp(['The peakEquation : ',peakEquation]);warning("off")
+
+    % scale converion 
+    sc = scaleConverion (XiPi.separateSalce,scale);
     % parameterize
     for i = 1:size(XiPi.separate.xi,1)
-        if strcmp(scale,'logarithm')
-            ap = apFit(XiPi.freq, log10(XiPi.separate.xi(i,:)), apEquation);
-        else
-            ap = apFit(XiPi.freq, XiPi.separate.xi(i,:), apEquation);
+        switch sc
+            case 1
+                data = log10(XiPi.separate.xi(i,:));
+            case 2
+                data = XiPi.separate.xi(i,:);
+            case 3
+                if strcmp(apEquation,"b - log10(x^a)")
+                    error("ERROR : apEquation must be specified")
+                else
+                    data = XiPi.separate.xi(i,:);
+                end
+            case -1
+                error(['ERROR : scale converion error, separate : ',XiPi.separateSalce, ', parameterize : ',scale])
         end
-
-        XiPi.paras.xi_paras.("paramter_" + num2str(i)) = ap;
+        ap = apFit(XiPi.freq, data, apEquation);
+        XiPi.parameters.xi_paras.("spectra_" + num2str(i)) = ap;
     end
     
     channels = fieldnames(XiPi.separate.pi);
@@ -31,15 +42,20 @@ function XiPi = xp_parameterize(XiPi,varargin)
         currentChannel = channels{i,1};
         parameter = struct;
         for j = 1 : size(XiPi.separate.pi.(currentChannel),1)
-            if strcmp(scale,'logarithm')
-                peak = peakFit(XiPi.freq, log10(XiPi.separate.pi.(currentChannel)(j,:)), peakEquation);
-                parameter.("peak_" + num2str(j)) = peak;
-            else
-                peak = peakFit(para.freq, para.pi.(currentChannel)(j,:), peakEquation);
-                parameter.("peak_" + num2str(j)) = peak;
+            switch sc
+                case 1
+                    data = log10(XiPi.separate.pi.(currentChannel)(j,:));
+                case 2
+                    data = XiPi.separate.pi.(currentChannel)(j,:);
+                case 3
+                    data = XiPi.separate.pi.(currentChannel)(j,:);
+                case -1
+                    error(['ERROR : scale converion error, separate : ',XiPi.separateSalce, ', parameterize : ',scale])
             end
+            peak = peakFit(XiPi.freq, data, peakEquation);
+            parameter.("peak_" + num2str(j)) = peak;
         end
-        XiPi.paras.pi_paras.("channel_" + num2str(i)) = parameter;
+        XiPi.parameters.pi_paras.("spectra_" + num2str(i)) = parameter;
     end
     
     % notify
@@ -49,4 +65,16 @@ function XiPi = xp_parameterize(XiPi,varargin)
     % write history
     insertLoc = length(fieldnames(XiPi.history)) + 1;
     XiPi.history.("history_" + num2str(insertLoc)) = 'parameterization';
+end
+
+function s = scaleConverion(scale1,scale2)
+    if strcmp(scale1,"natural") && strcmp(scale2,"logarithm")
+        s = 1;
+    elseif strcmp(scale1,"logarithm") && strcmp(scale2,"logarithm")
+        s = 2;
+    elseif strcmp(scale1,"natural") && strcmp(scale2,"natural")
+        s = 3;
+    else 
+        s = -1;
+    end
 end
