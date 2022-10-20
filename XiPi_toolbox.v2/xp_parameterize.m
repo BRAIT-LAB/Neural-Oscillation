@@ -1,6 +1,6 @@
 function XiPi = xp_parameterize(XiPi,varargin)
     % init XiPi.spectra
-    XiPi.spectra = [];
+    XiPi.parameters = [];
 
     input = inputParser();
     input.addParameter('apEquation','b - log10(x^a)',@ischar);
@@ -14,7 +14,7 @@ function XiPi = xp_parameterize(XiPi,varargin)
 
     disp(['The apEquation : ',apEquation]);
     disp(['The peakEquation : ',peakEquation]);warning("off")
-
+    disp(['Scale - separate : ',XiPi.separateSalce,' ---->  ','parameterize : ', scale])
     % scale converion 
     sc = scaleConverion (XiPi.separateSalce,scale);
     % parameterize
@@ -44,7 +44,7 @@ function XiPi = xp_parameterize(XiPi,varargin)
         for j = 1 : size(XiPi.separate.pi.(currentChannel),1)
             switch sc
                 case 1
-                    data = log10(XiPi.separate.pi.(currentChannel)(j,:));
+                    data = XiPi.separate.pi.(currentChannel)(j,:);
                 case 2
                     data = XiPi.separate.pi.(currentChannel)(j,:);
                 case 3

@@ -8,10 +8,10 @@ XiPi = xp_importdata([]);
 XiPi = xp_calculateSpec(XiPi,[],50);
 
 % separateSepc
-XiPi = xp_separateSepc(XiPi,'chooseChannels',[1 2]);
+XiPi = xp_separateSepc(XiPi);
 
 % plot
-XiPi = xp_plot(XiPi,1:100);
+% XiPi = xp_plot(XiPi,1:100);
 
 % parameterization
 XiPi = xp_parameterize(XiPi);

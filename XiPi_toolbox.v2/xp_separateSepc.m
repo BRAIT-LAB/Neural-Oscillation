@@ -1,4 +1,7 @@
 function XiPi = xp_separateSepc(XiPi,varargin)
+            % init
+            XiPi.separate = [];
+
             % new saparate spectra struct
             XiPi.separate.xi = [];
             XiPi.separate.pi = struct;
@@ -19,16 +22,15 @@ function XiPi = xp_separateSepc(XiPi,varargin)
             if  strcmp(scale,'natural')
                 for i = channels
                     try 
-                    [overallfitting,components] = scmem_unim(XiPi.freq',XiPi.spectra(i,:)',[0 0 0]);
+                        [overallfitting,components] = scmem_unim(XiPi.freq',XiPi.spectra(i,:)',[0 0 0]);
+                        XiPi.separate.xi = [XiPi.separate.xi;components(:,1)'];
+                        XiPi.separate.pi.("spectra_" + num2str(i)) = components(:,2:end)';
+                        XiPi.separate.combining = [XiPi.separate.combining;overallfitting'];
                     catch
-                        XiPi.separate.xi = [XiPi.separate.xi;zeros(1,length(XiPi.freq))];
+                        XiPi.separate.xi = [XiPi.separate.xi;XiPi.spectra(i,:)];
                         XiPi.separate.pi.("spectra_" + num2str(i)) = [];
-                        XiPi.separate.combining = [XiPi.separate.combining;zeros(1,length(XiPi.freq))];
+                        XiPi.separate.combining = [XiPi.separate.combining;XiPi.spectra(i,:)];
                     end
-                    XiPi.separate.xi = [XiPi.separate.xi;components(:,1)'];
-                    XiPi.separate.pi.("spectra_" + num2str(i)) = components(:,2:end)';
-                    XiPi.separate.combining = [XiPi.separate.combining;overallfitting'];
-                    
                     str = ['running separateSpectra...',num2str(i/length(channels)*100),'%'];
                     waitbar(i/length(channels),h,str);
                 end
