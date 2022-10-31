@@ -1,6 +1,8 @@
 function XiPi = xp_importdata(EEG)
     % use EEGLAB import set function.
-    if isempty(EEG)
+ 
+    if isempty(EEG)   
+        eeglab nogui
         EEG = pop_loadset();
     end
 
@@ -20,6 +22,7 @@ function XiPi = xp_importdata(EEG)
     % write history
     insertLoc = length(fieldnames(XiPi.history)) + 1;
     XiPi.history.("history_" + num2str(insertLoc)) = 'importdata';
+    clearvars -except XiPi
 end
 
 

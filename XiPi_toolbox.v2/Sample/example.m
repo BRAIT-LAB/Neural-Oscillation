@@ -1,8 +1,7 @@
 % EEGLAB preprocessing ...
 
-
 % load data, need eeglab support
-XiPi = xp_importdata([]);
+XiPi = xp_importdata([]);clearvars -except XiPi
 
 % calculateSpec
 XiPi = xp_calculateSpec(XiPi,[],50);
