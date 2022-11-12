@@ -108,11 +108,11 @@ x = [0 0 0 0 0 0 1 1 1 1 1 1 2 2 2 2 2 2 3 3 3 3 3 3 4 4 4 4 4 4 5 5 5 5 5 5];
 y = [0:5,0:5,0:5,0:5,0:5,0:5];
 sz = zeros(1,36);
 for i = 1:100
-    a = groudNum(i);
+    a = peakNums(i);
     b = fitNum(i);
     sz(1,6*a+b+1) = sz(1,6*a+b+1) + 1;
 end
-bubblechart(x,y,sz,sz,'MarkerFaceColor','red','MarkerEdgeColor','none');
+bubblechart(x,y,sz,sz,'MarkerFaceAlpha',0.6,'MarkerFaceColor','red','MarkerEdgeColor','none');
 
 hold on
 
@@ -121,15 +121,15 @@ x = [0 0 0 0 0 0 1 1 1 1 1 1 2 2 2 2 2 2 3 3 3 3 3 3 4 4 4 4 4 4 5 5 5 5 5 5];
 y = [0:5,0:5,0:5,0:5,0:5,0:5];
 sz = zeros(1,36);
 for i = 1:100
-    a = groudNum(i);
+    a = peakNums(i);
     b = Nums(i);
     sz(1,6*a+b+1) = sz(1,6*a+b+1) + 1;
 end
 map = colormap(summer(10000));
-bubblechart(x,y,sz,sz,'MarkerFaceColor','blue','MarkerEdgeColor','none');
+bubblechart(x,y,sz,sz,'MarkerFaceAlpha',0.4,'MarkerFaceColor','blue','MarkerEdgeColor','none');
 
 
-blgd = bubblelegend('PeakNums');
+blgd = bubblelegend('SampleNums');
 lgd = legend('XiPi fit','FOOOF fit');
 blgd.Layout.Tile = 'east';
 lgd.Layout.Tile = 'east';
@@ -172,6 +172,3 @@ for i = 1:100
     b = bar(freq(i),w(i));
     set(b,'facecolor',color(flag(i),:))
 end
-
-%% 2022.10.18
-% 错误率  2*2 
