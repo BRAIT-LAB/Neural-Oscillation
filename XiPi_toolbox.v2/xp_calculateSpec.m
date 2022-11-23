@@ -1,4 +1,22 @@
 function XiPi = xp_calculateSpec(XiPi,time_range,limited_freq,varargin)
+% xp_calculateSpec calculates the spectral matrix with pwelch method.
+
+% Usage: XiPi = xp_calculateSpec(XiPi,[1 30],50,'select_chan',[1 2])
+% Input
+%   XiPi --- Initialized XiPi struct
+%   time_range --- Intercept from the original data according to time_range
+%   limited_freq --- calculate spectrum in [0 - limited_freq] Hz
+% Varargin
+%   select_chan : select the specific channels [defult:[1:XiPi.nbchan]]
+%   window_size : welch's method window_size [defult:XiPi.srate]
+%   overlapping : welch's method overlapping [defult:XiPi.srate/2]
+%   freqResolution : frequency resolution [defult:0.5]
+% Output
+%    XiPi --- the XiPi.spectra and XiPi.history will be updated.
+
+% Zhihao Zhang, Oct. 15, 2022
+% See also pwelch
+
     % init XiPi.spectra
     XiPi.spectra = [];
     

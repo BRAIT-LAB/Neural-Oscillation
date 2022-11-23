@@ -1,4 +1,21 @@
 function XiPi = xp_separateSepc(XiPi,varargin)
+% XiPi = xp_separateSepc(XiPi,varargin) decompose neural power spectral
+% into xi component and pi components.
+% Usage: XiPi = xp_separateSepc(XiPi,varargin)
+% Input
+%   XiPi --- XiPi struct. The xp_calculateSpec must be run first,which
+%   meas that XiPi.spectra can not be empty.
+% Varargin
+%   choose_channels : select the specific channels [defult:1 : size(XiPi.spectra,1)]
+%   scale : The scale of separating,'natural' or 'logarithm'. If 'natural',
+%   the spectra will be separated directly. If 'logarithm', the spectra
+%   will be converted into logarithm scale, then separated. [default:'natural']
+
+% Output
+%    XiPi --- The XiPi.separate will be updated.
+
+% Zhihao Zhang, Oct. 15, 2022
+
     % init
     XiPi.separate = [];
 
@@ -8,10 +25,10 @@ function XiPi = xp_separateSepc(XiPi,varargin)
     XiPi.separate.combining = [];
 
     input = inputParser();
-    input.addParameter('chooseChannels', 1 : size(XiPi.spectra,1));
+    input.addParameter('choose_channels', 1 : size(XiPi.spectra,1));
     input.addParameter('scale', 'natural',@ischar);
     input.parse(varargin{:});
-    channels = input.Results.chooseChannels;
+    channels = input.Results.choose_channels;
     scale = input.Results.scale;
     XiPi.separateSalce = scale;
 

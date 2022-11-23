@@ -1,8 +1,24 @@
 function XiPi = xp_importdata(EEG)
+% XiPi = xp_importdata(EEG) load/import EEG data using EEGLAB and convert to XiPi struct.
+% Usage: XiPi = xp_importdata(EEG) / XiPi = xp_importdata([])
+% Input
+%   EEG --- The EEG struct using EEGLAB, if is empty,choose the .set file
+%   to load/import data.
+
+% Output
+%    XiPi --- Initialized XiPi struct
+
+% Zhihao Zhang, Oct. 15, 2022
+% See also pop_loadset
+
     % use EEGLAB import set function.
  
     if isempty(EEG)   
-        eeglab nogui
+        try 
+            eeglab nogui
+        catch
+            error("ERROR : Please addpath [eeglab location]")
+        end
         EEG = pop_loadset();
     end
 

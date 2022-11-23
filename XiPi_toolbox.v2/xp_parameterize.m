@@ -1,14 +1,39 @@
 function XiPi = xp_parameterize(XiPi,varargin)
-    % init XiPi.spectra
+% XiPi = xp_parameterize(XiPi,varargin) parameterize xi component and pi
+% components.This step is not necessary, but it is the demand of
+% quantitative EEG.
+% Usage: XiPi = xp_parameterize(XiPi,varargin)
+% Input
+%   XiPi --- XiPi struct. The xp_separateSpec must be run first,which
+%   meas that XiPi.separate can not be empty.
+% Varargin
+%   apEquation : The fitting function of xi(aperiodic) component.
+%   peakEquation : The fitting function of pi(periodic) components.
+%   scale :  
+%   The scale of parameterize,'natural' or 'logarithm'. Its effect is influenced by
+%   separate_scale. [defalut:'logarithm']
+%   -------------------------------------------------------
+%   |   separate_scale |  parameterize_scale |          Note
+%   |    'natural'     |     'logarithm'     | xi component -> logarithm scale
+%   |   'logarithm'    |     'logarithm'     | parameterize diretly
+%   |    'natural'     |      'natural'      | ap/peakEq must be definced
+%   |   'logarithm'    |      'natural'      | Not allowed
+
+% Output
+%    XiPi --- The XiPi.parameters will be updated.
+
+% Zhihao Zhang, Oct. 15, 2022
+
+    % init XiPi.parameters
     XiPi.parameters = [];
 
     input = inputParser();
-    input.addParameter('apEquation','b - log10(x^a)',@ischar);
-    input.addParameter('peakEquation','a1*exp(-((x-b1)/c1)^2)',@ischar);
+    input.addParameter('ap_equation','offset - log10(x^exponent)',@ischar);
+    input.addParameter('peak_equation','power*exp(-((x-center)/bandwidth)^2)',@ischar);
     input.addParameter('scale','logarithm',@ischar);
     input.parse(varargin{:});
-    apEquation = input.Results.apEquation;
-    peakEquation = input.Results.peakEquation;
+    apEquation = input.Results.ap_equation;
+    peakEquation = input.Results.peak_equation;
     scale = input.Results.scale;
     XiPi.parameterizeSalce = scale;
 

@@ -4,7 +4,7 @@
 XiPi = xp_importdata([]);clearvars -except XiPi
 
 % calculateSpec
-XiPi = xp_calculateSpec(XiPi,[],50);
+XiPi = xp_calculateSpec(XiPi,[1 30],50);
 
 % separateSepc
 XiPi = xp_separateSepc(XiPi);
